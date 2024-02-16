@@ -1,5 +1,5 @@
 import PromptSync from "prompt-sync";
-import movieDataLibrary from "./CreateDatabase.js";
+import movieDataLibrary from "./create-database.js";
 
 const prompt = PromptSync({ sigint: true });
 
