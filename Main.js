@@ -3,7 +3,7 @@ import movieDataLibrary from "./CreateDatabase.js";
 
 const prompt = PromptSync({ sigint: true });
 
-const allMovies = movieDataLibrary.find().exec();
+const allMovies = movieDataLibrary.find();
 
 async function AssignmentApp() {
 	let choice;
@@ -22,7 +22,7 @@ async function AssignmentApp() {
 		switch (choice) {
 			case "1":
 				await allMovies.then((movies) => {
-					movies.map((movie) => {
+					movies.forEach((movie) => {
 						console.log(movie);
 					});
 				});
@@ -105,7 +105,7 @@ async function AssignmentApp() {
 
 				console.log(cast);
 
-				movieDataLibrary.create({
+				await movieDataLibrary.create({
 					title: title,
 					director: director,
 					releaseYear: releaseYear,
@@ -329,8 +329,8 @@ async function AssignmentApp() {
 							" does not exist in the database.\nThe following movies are available in the database: \n"
 					);
 					await allMovies.then((movies) => {
-						movies.map((movie) => {
-							console.log(movie.title);
+						movies.forEach((movie) => {
+							console.log(movie);
 						});
 					});
 					console.log();
@@ -354,12 +354,27 @@ async function AssignmentApp() {
 							" does not exist in the database.\nThe following movies are available in the database: \n"
 					);
 					await allMovies.then((movies) => {
-						movies.map((movie) => {
+						movies.forEach((movie) => {
 							console.log(movie.title);
 						});
 					});
 					console.log();
 				} else {
+					let areYouSure = prompt(
+						"Are you sure you want to delete " +
+							movieTitleToDelete +
+							"? (yes/no): "
+					);
+
+					while (areYouSure !== "yes" || areYouSure !== "no") {
+						areYouSure = prompt(
+							"Invalid input! Please enter 'yes' or 'no' to confirm or cancel the deletion: "
+						);
+						if (areYouSure.toLowerCase() === "no") {
+							console.log("\nMovie deletion cancelled!\n");
+							break;
+						}
+					}
 					let deleteSuccess = await movieDataLibrary.deleteOne({
 						title: movieTitleToDelete,
 					});

@@ -204,13 +204,13 @@ const moviesData = [
 	},
 ];
 
-let moviesDataExists = await movieDataLibrary.find();
+let moviesDataArrayExists = await movieDataLibrary.find();
 
-if (moviesDataExists.length < 25) {
+if (moviesDataArrayExists.length < 22) {
 	// await movieDataLibrary.collection.drop();
 	await movieDataLibrary.insertMany(moviesData, { upsert: true });
 }
-console.log("moviesDataExists: ", moviesDataExists);
+// console.log("moviesDataExists: ", moviesDataExists);
 // await movieDataLibrary.insertMany(moviesData, { upsert: true });
 
 // } else { console.log("Not connected to database");}
