@@ -206,7 +206,7 @@ const moviesData = [
 
 let moviesDataArrayExists = await movieDataLibrary.find();
 
-if (moviesDataArrayExists.length < 22) {
+if (moviesDataArrayExists.length < 15) {
 	// await movieDataLibrary.collection.drop();
 	await movieDataLibrary.insertMany(moviesData, { upsert: true });
 }

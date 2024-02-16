@@ -3,7 +3,7 @@ import movieDataLibrary from "./CreateDatabase.js";
 
 const prompt = PromptSync({ sigint: true });
 
-const allMovies = movieDataLibrary.find();
+// const allMovies = movieDataLibrary.find();
 
 async function AssignmentApp() {
 	let choice;
@@ -21,10 +21,9 @@ async function AssignmentApp() {
 
 		switch (choice) {
 			case "1":
-				await allMovies.then((movies) => {
-					movies.forEach((movie) => {
-						console.log(movie);
-					});
+				const allMovies = await movieDataLibrary.find().exec();
+				allMovies.forEach((movie) => {
+					console.log(movie);
 				});
 
 				break;
@@ -328,11 +327,12 @@ async function AssignmentApp() {
 							movieTitleToUpdate +
 							" does not exist in the database.\nThe following movies are available in the database: \n"
 					);
-					await allMovies.then((movies) => {
-						movies.forEach((movie) => {
-							console.log(movie);
-						});
+
+					const allMovies = await movieDataLibrary.find().exec();
+					allMovies.forEach((movie) => {
+						console.log(movie.title);
 					});
+
 					console.log();
 				}
 				break;
@@ -353,10 +353,9 @@ async function AssignmentApp() {
 							movieTitleToDelete +
 							" does not exist in the database.\nThe following movies are available in the database: \n"
 					);
-					await allMovies.then((movies) => {
-						movies.forEach((movie) => {
-							console.log(movie.title);
-						});
+					const allMovies = await movieDataLibrary.find().exec();
+					allMovies.forEach((movie) => {
+						console.log(movie.title);
 					});
 					console.log();
 				} else {
@@ -366,14 +365,14 @@ async function AssignmentApp() {
 							"? (yes/no): "
 					);
 
-					while (areYouSure !== "yes" || areYouSure !== "no") {
+					while (areYouSure !== "yes" && areYouSure !== "no") {
 						areYouSure = prompt(
 							"Invalid input! Please enter 'yes' or 'no' to confirm or cancel the deletion: "
 						);
-						if (areYouSure.toLowerCase() === "no") {
-							console.log("\nMovie deletion cancelled!\n");
-							break;
-						}
+					}
+					if (areYouSure.toLowerCase() === "no") {
+						console.log("\nMovie deletion cancelled!\n");
+						break;
 					}
 					let deleteSuccess = await movieDataLibrary.deleteOne({
 						title: movieTitleToDelete,
